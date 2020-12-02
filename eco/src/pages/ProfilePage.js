@@ -119,10 +119,10 @@ const ProfilePage = ({ location, history }) => {
                                     <td>{order.createdAt.substring(0, 10)}</td>
                                     <td>{order.totalPrice}</td>
                                     <td>{order.isPaid ? order.paidAt.substring(0, 10) : (
-                                        <i className='fas fa-times' style={{ color: "red" }}></i>
+                                        <i className='fas fa-cc=paypal' style={{ color: "dodgerblue" }}></i>
                                     )}</td>
-                                    <td>{order.deliveredAt ? order.paidAt.substring(0, 10) : (
-                                        <i className='fas fa-times' style={{ color: "red" }}></i>
+                                    <td>{order.deliveredAt ? order.deliveredAt.substring(0, 10) : (
+                                        <i className='fas fa-truck' style={{ color: "doderblue" }}></i>
                                     )}</td>
                                     <td>
                                         <LinkContainer to={`/order/${order._id}`}>
