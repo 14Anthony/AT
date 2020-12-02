@@ -121,10 +121,27 @@ const getUsers = asyncHandler(async (req, res) => {
     res.json(users)
 })
 
+
+// the is going to Delete a user
+// this will be the Delete to /api/users/:id
+// this is access for a private admin
+//admin controller from Travis
+const deleteUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+    if (user) {
+        await user.remove()
+        res.json({ message: 'User Deleted' })
+    } else {
+        res.status(404)
+        throw new Error('User Not Found')
+    }
+})
+
 export {
     authUser,
     getUserProfile,
     registerUser,
     updateUserProfile,
-    getUsers
+    getUsers,
+    deleteUser
 }
