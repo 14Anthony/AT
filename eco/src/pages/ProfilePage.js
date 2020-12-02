@@ -66,7 +66,7 @@ const ProfilePage = ({ location, history }) => {
 
     return (
         <Row>
-            <Col md={4}>
+            <Col md={3}>
                 <h2>USER PROFILE</h2>
                 {message && <Message variant='danger'>{message}</Message>}
                 {error && <Message variant='danger'>{error}</Message>}
@@ -97,7 +97,7 @@ const ProfilePage = ({ location, history }) => {
                     <Button type='submit' variant="info">UPDATE</Button>
                 </Form>
             </Col>
-            <Col md={8}>
+            <Col md={9}>
                 <h2>Orders</h2>
 
                 {loadingOrders ? <Loader /> : errorOrders ? <Message variant='danger'>{errorOrders}</Message> : (
@@ -119,14 +119,14 @@ const ProfilePage = ({ location, history }) => {
                                     <td>{order.createdAt.substring(0, 10)}</td>
                                     <td>{order.totalPrice}</td>
                                     <td>{order.isPaid ? order.paidAt.substring(0, 10) : (
-                                        <i className='fas fa-cc=paypal' style={{ color: "dodgerblue" }}></i>
+                                        <i className='fas fa-cc-paypal' style={{ color: "dodgerblue" }}></i>
                                     )}</td>
                                     <td>{order.deliveredAt ? order.deliveredAt.substring(0, 10) : (
                                         <i className='fas fa-truck' style={{ color: "doderblue" }}></i>
                                     )}</td>
                                     <td>
                                         <LinkContainer to={`/order/${order._id}`}>
-                                            <Button variant='info'>DETAILS</Button>
+                                            <Button variant='cyan'>DETAILS</Button>
                                         </LinkContainer>
                                     </td>
 
