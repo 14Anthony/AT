@@ -115,6 +115,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // the is going to Get all the users
 // this will be the POST to /api/users
 // this is access for a private admin
+//admin controller from Travis
 const getUsers = asyncHandler(async (req, res) => {
     const users = await User.find({})
     res.json(users)
