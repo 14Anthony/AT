@@ -70,9 +70,17 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     }
 
 })
+// the is going to GET logged in user orders
+// this will be the get to /api/orders/myorders
+// this is access for a private routes
+const getMyOrders = asyncHandler(async (req, res) => {
+    const orders = await (await Order.find({ user: req.user._id }))
+    res.json(orders)
+})
 
 export {
     addOrderItems,
     getOrderById,
-    updateOrderToPaid
+    updateOrderToPaid,
+    getMyOrders
 }
