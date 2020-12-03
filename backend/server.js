@@ -43,4 +43,7 @@ app.use(errorHandler);
 
 
 const PORT = process.env.PORT || 8800;
-app.listen(8800);
+// app.listen(8800);
+app.listen(PORT, function () {
+    console.log(`:earth_americas:  ==> API Server now listening on PORT ${PORT}!`);
+});
