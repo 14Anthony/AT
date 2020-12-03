@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import axios from 'axios'
 // import { USER_UPDATE_RESET } from 
 
 const ProductEditAdminPage = ({ match, history }) => {
@@ -21,6 +22,7 @@ const ProductEditAdminPage = ({ match, history }) => {
     const [countInStock, setCountInStock] = useState('')
     const [rating, setRating] = useState('')
     const [numReviews, setNumReviews] = useState(0)
+    const [uploading, setUploading] = useState(false)
 
 
     const dispatch = useDispatch()
@@ -52,6 +54,29 @@ const ProductEditAdminPage = ({ match, history }) => {
             }
         }
     }, [product, dispatch, productId, history, successUpdate])
+
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
+        setUploading(true)
+
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            const { data } = await axios.post('/api/upload', formData, config)
+            setImage(data)
+            setUploading(false)
+        } catch (error) {
+            console.error(error)
+            setUploading(false)
+        }
+
+    }
+
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -97,7 +122,8 @@ const ProductEditAdminPage = ({ match, history }) => {
                             <Form.Label>Image:</Form.Label>
                             <Form.Control type='text' placeholder='Enter Image Url' value={image} onChange={(e) => setImage(e.target.value)}></Form.Control>
                         </Form.Group>
-
+                        <Form.File id='image-file' label='Choose File' custom onChange={uploadFileHandler}></Form.File>
+                        {uploading && <Loader />}
                         <Form.Group controlId='brand'>
                             <Form.Label>BRAND:</Form.Label>
                             <Form.Control type='text' placeholder='Enter brand' value={brand} onChange={(e) => setBrand(e.target.value)}></Form.Control>
