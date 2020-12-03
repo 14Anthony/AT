@@ -68,8 +68,8 @@ const ProfilePage = ({ location, history }) => {
         <Row>
             <Col md={3}>
                 <h2>USER PROFILE</h2>
-                {message && <Message variant='danger'>{message}</Message>}
-                {error && <Message variant='danger'>{error}</Message>}
+                {message && <Message variant='warning'>{message}</Message>}
+                {error && <Message variant='warning'>{error}</Message>}
                 {success && <Message variant='info'>Profile Updated</Message>}
                 {loading && <Loader />}
                 <Form onSubmit={submitHandler}>
@@ -100,7 +100,7 @@ const ProfilePage = ({ location, history }) => {
             <Col md={9}>
                 <h2>Orders</h2>
 
-                {loadingOrders ? <Loader /> : errorOrders ? <Message variant='danger'>{errorOrders}</Message> : (
+                {loadingOrders ? <Loader /> : errorOrders ? <Message variant='warning'>{errorOrders}</Message> : (
                     <Table striped bordered hover responsive className='table-sm'>
                         <thead>
                             <tr>

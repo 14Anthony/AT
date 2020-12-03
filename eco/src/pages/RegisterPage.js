@@ -42,8 +42,8 @@ const RegisterPage = ({ location, history }) => {
     return (
         <FormContainer>
             <h2>REGISTER HERE</h2>
-            {message && <Message variant='danger'>{message}</Message>}
-            {error && <Message variant='danger'>{error}</Message>}
+            {message && <Message variant='warning'>{message}</Message>}
+            {error && <Message variant='warning'>{error}</Message>}
             {loading && <Loader />}
             <Form onSubmit={submitHandler}>
 

@@ -4,7 +4,7 @@ import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listUsers } from '../actions/userActions'
+import { listUsers, deleteUser } from '../actions/userActions'
 
 const UserListAdminPage = ({ history }) => {
     const dispatch = useDispatch()
@@ -15,6 +15,9 @@ const UserListAdminPage = ({ history }) => {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+    const userDelete = useSelector(state => state.userDelete)
+    const { success: successDelete } = userDelete
+
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
             dispatch(listUsers())
@@ -22,16 +25,18 @@ const UserListAdminPage = ({ history }) => {
             history.push('/login')
         }
 
-    }, [dispatch, history, userInfo])
+    }, [dispatch, history, userInfo, successDelete])
 
     const deleteHandler = (id) => {
-        console.log('delete')
+        if (window.confirm('Are you sure you would like to delete this user?')) {
+            dispatch(deleteUser(id))
+        }
     }
 
     return (
         <>
             <h2>Users</h2>
-            {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :
+            {loading ? <Loader /> : error ? <Message variant='warning'>{error}</Message> :
                 (
                     <Table striped bordered hover responsive className='table-sm'>
                         <thead>
@@ -54,12 +59,12 @@ const UserListAdminPage = ({ history }) => {
                                         (<i className='fa fa-times' style={{ color: 'blue' }}></i>)}
                                     </td>
                                     <td>
-                                        <LinkContainer to={`/user/${user._id}/edit`}>
+                                        <LinkContainer to={`/admin/user/${user._id}/edit`}>
                                             <Button variant='info' className='btn-md'>
                                                 <i className='fas fa-edit'></i>
                                             </Button>
                                         </LinkContainer>
-                                        <Button variant='danger' className='btn-md' onClick={() => deleteHandler(user._id)}>
+                                        <Button variant='warning' className='btn-md' onClick={() => deleteHandler(user._id)}>
                                             <i className='fas fa-trash'></i>
                                         </Button>
 
