@@ -11,9 +11,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
-    "client-install":"npm install --prefix eco",
-    "eco":"cd eco && npm run start",
-    "start:dev":"concurrently\"nodemon --ignore'eco/*\"\"npm run eco\"",
+    "client-install": "npm install --prefix eco",
+    "eco": "cd eco && npm run start",
+    "start:dev": "concurrently\"nodemon --ignore'eco/*\"\"npm run eco\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix eco && npm run build --prefix eco"
   },
   "repository": {
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
-    "if-env":"^1.0.4",
+    "if-env": "^1.0.4",
     "nodemon": "^2.0.6"
   }
 }
