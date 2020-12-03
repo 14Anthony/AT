@@ -15,6 +15,7 @@ import OrderPage from './pages/OrderPage';
 import UserListAdminPage from './pages/UserListAdminPage';
 import UserEditAdminPage from './pages/UserEditAdminPage';
 import ProductListAdminPage from './pages/ProductListAdminPage';
+import ProductEditAdminPage from './pages/ProductEditAdminPage';
 
 import { Container } from 'react-bootstrap';
 
@@ -50,6 +51,9 @@ const App = () => {
             <Route path='/admin/userlist' component={UserListAdminPage} />
 
             <Route path='/admin/user/:id/edit' component={UserEditAdminPage} />
+
+            <Route path='/admin/product/:id/edit' component={ProductEditAdminPage} />
+
 
             <Route path='/admin/productlist' component={ProductListAdminPage} />
 
