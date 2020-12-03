@@ -66,19 +66,20 @@ const createProduct = asyncHandler(async (req, res) => {
 //  PUT to /api/products/:id
 // this is access for a Private Admin  routes
 const updateProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, image, brand, category, countInStock, rating } = req.body
+    const { name, price, image, brand, category, description, countInStock, rating, numReviews } = req.body
 
     const product = await Product.findById(req.params.id)
 
     if (product) {
         product.name = name
         product.price = price
-        product.description = description
         product.image = image
         product.brand = brand
         product.category = category
+        product.description = description
         product.countInStock = countInStock
         product.rating = rating
+        product.numReviews = numReviews
 
         const updatedProduct = await product.save()
         res.json(updatedProduct)

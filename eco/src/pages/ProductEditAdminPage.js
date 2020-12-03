@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { listProductDetails, listProductsDetails, } from '../actions/productActions'
+import { listProductDetails, updateProduct } from '../actions/productActions'
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 // import { USER_UPDATE_RESET } from 
 
 const ProductEditAdminPage = ({ match, history }) => {
@@ -15,7 +16,7 @@ const ProductEditAdminPage = ({ match, history }) => {
     const [price, setPrice] = useState(0)
     const [image, setImage] = useState('')
     const [brand, setBrand] = useState('')
-    const [category, setCategory] = useState(0)
+    const [category, setCategory] = useState('')
     const [description, setDescription] = useState('')
     const [countInStock, setCountInStock] = useState('')
     const [rating, setRating] = useState('')
@@ -27,29 +28,47 @@ const ProductEditAdminPage = ({ match, history }) => {
     const productDetails = useSelector(state => state.productDetails)
     const { loading, error, product } = productDetails
 
-    // const userUpdate = useSelector(state => state.userUpdate)
-    // const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = userUpdate
+    const productUpdate = useSelector(state => state.productUpdate)
+    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate
 
     useEffect(() => {
-
-        if (!product.name || product._id !== productId) {
-            dispatch(listProductDetails(productId))
+        if (successUpdate) {
+            dispatch({ type: PRODUCT_UPDATE_RESET })
+            history.push('/admin/productlist')
         } else {
-            setName(product.name)
-            setPrice(product.price)
-            setImage(product.image)
-            setBrand(product.brand)
-            setCategory(product.category)
-            setDescription(product.description)
-            setCountInStock(product.countInStock)
-            setRating(product.rating)
-            setNumReviews(product.numReviews)
+
+            if (!product.name || product._id !== productId) {
+                dispatch(listProductDetails(productId))
+            } else {
+                setName(product.name)
+                setPrice(product.price)
+                setImage(product.image)
+                setBrand(product.brand)
+                setCategory(product.category)
+                setDescription(product.description)
+                setCountInStock(product.countInStock)
+                setRating(product.rating)
+                setNumReviews(product.numReviews)
+            }
         }
-    }, [product, dispatch, productId, product, history])
+    }, [product, dispatch, productId, history, successUpdate])
 
     const submitHandler = (e) => {
         e.preventDefault()
         //UPDATE PRODUCT
+        dispatch(updateProduct({
+            _id: productId,
+            name,
+            price,
+            image,
+            brand,
+            category,
+            description,
+            countInStock,
+            rating,
+            numReviews,
+
+        }))
 
 
     }
@@ -59,8 +78,8 @@ const ProductEditAdminPage = ({ match, history }) => {
             <Link to='/admin/productlist' className='btn btn-primary my-3'>Back</Link>
             <FormContainer>
                 <h2>EDIT PRODUCT</h2>
-                {/* {loadingUpdate && <Loader />}
-            {errorUpdate && <Message variant='warning'>{errorUpdate}</Message>} */}
+                {loadingUpdate && <Loader />}
+                {errorUpdate && <Message variant='warning'>{errorUpdate}</Message>}
                 {loading ? <Loader /> : error ? <Message variant='warning'>{error}</Message> : (
                     <Form onSubmit={submitHandler}>
 
