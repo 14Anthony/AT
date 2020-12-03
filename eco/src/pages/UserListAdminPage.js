@@ -36,7 +36,7 @@ const UserListAdminPage = ({ history }) => {
     return (
         <>
             <h2>Users</h2>
-            {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :
+            {loading ? <Loader /> : error ? <Message variant='warning'>{error}</Message> :
                 (
                     <Table striped bordered hover responsive className='table-sm'>
                         <thead>

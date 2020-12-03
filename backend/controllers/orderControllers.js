@@ -70,6 +70,27 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     }
 
 })
+
+// the is going to update order to delivered
+// this will be the get to /api/orders/:id/deliver
+// this is access for a private/admin routes
+const updateOrderToDelivered = asyncHandler(async (req, res) => {
+    const order = await (await Order.findById(req.params.id))
+
+    if (order) {
+        order.isDelivered = true
+        order.deliveredAt = Date.now()
+
+
+
+        const updatedOrder = await order.save()
+        res.json(updatedOrder)
+    } else {
+        res.status(404)
+        throw new Error('Order not found')
+    }
+
+})
 // the is going to GET logged in user orders
 // this will be the get to /api/orders/myorders
 // this is access for a private routes
@@ -90,6 +111,7 @@ export {
     addOrderItems,
     getOrderById,
     updateOrderToPaid,
+    updateOrderToDelivered,
     getMyOrders,
     getOrders,
 }
