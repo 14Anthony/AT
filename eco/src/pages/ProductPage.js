@@ -42,7 +42,7 @@ const ProductPage = ({ history,match }) => {
     return (
         <>
             <Link className='btn btn-secondary my-3' to='/'>Back</Link>
-            {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+            {loading ? <Loader /> : error ? <Message variant='warning'>{error}</Message> : (
                 <Row>
                     <Col md={6}>
                         <Image src={product.image} alt={product.name} fluid />

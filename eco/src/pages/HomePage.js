@@ -34,7 +34,7 @@ const HomePage = () => {
     return (
         <>
             <h1>Cyber Monday</h1>
-            {loading ? <Loader /> : error ? (<Message variant='danger'> {error}</Message>) : (<Row>
+            {loading ? <Loader /> : error ? (<Message variant='warning'> {error}</Message>) : (<Row>
                 {products.map(product => (
 
                     <Col key={products._id} sm={12} md={6} lg={4} xl={3}>
