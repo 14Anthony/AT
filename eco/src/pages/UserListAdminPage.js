@@ -28,7 +28,9 @@ const UserListAdminPage = ({ history }) => {
     }, [dispatch, history, userInfo, successDelete])
 
     const deleteHandler = (id) => {
-        dispatch(deleteUser(id))
+        if (window.confirm('Are you sure you would like to delete this user?')) {
+            dispatch(deleteUser(id))
+        }
     }
 
     return (
@@ -57,7 +59,7 @@ const UserListAdminPage = ({ history }) => {
                                         (<i className='fa fa-times' style={{ color: 'blue' }}></i>)}
                                     </td>
                                     <td>
-                                        <LinkContainer to={`/user/${user._id}/edit`}>
+                                        <LinkContainer to={`/admin/user/${user._id}/edit`}>
                                             <Button variant='info' className='btn-md'>
                                                 <i className='fas fa-edit'></i>
                                             </Button>

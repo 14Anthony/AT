@@ -137,11 +137,58 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
 })
 
+// the is going to Get user by ID
+// this will be the POST to /api/users/:id
+// this is access for a private admin
+//admin controller from Travis
+const getUserById = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password')
+    if (user) {
+        res.json(user)
+    } else {
+        res.status(404)
+        throw new Error('User Not Found')
+    }
+
+})
+
+// the is going to Update user 
+// this will be the PUT to /api/users/:id
+// this is access for a private admin route
+const updateUser = asyncHandler(async (req, res) => {
+
+    const user = await User.findById(req.params.id)
+
+    if (user) {
+
+        user.name = req.body.name || user.name
+
+        user.email = req.body.email || user.email
+
+        user.isAdmin = req.body.isAdmin
+
+        const updatedUser = await user.save()
+
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+        })
+
+    } else {
+        res.status(404)
+        throw new Error('User not found')
+    }
+})
 export {
     authUser,
     getUserProfile,
     registerUser,
     updateUserProfile,
     getUsers,
-    deleteUser
+    deleteUser,
+    getUserById,
+    updateUser
+
 }
