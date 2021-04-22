@@ -10,19 +10,21 @@ function FormCard() {
   const [file, setFile] = useState("");
   const [products, setProducts] = useState({
     name: "",
-    brand: "",
-    category: "",
-    description: "",
-    salary: "",
-    countInStock: "",
     image: "",
+    brand: "",
+    description: "",
+    category: "",
+    price: "",
+    countInStock: "",
+    rating: 1,
+    numReviews: 0,
+    motto: "we have the meats",
   });
   const [image, setImage] = useState({
     imageUrl: null,
     imageAlt: null,
   });
 
-  console.log(formObject);
   // Load all books and store them with setBooks
   useEffect(() => {}, []);
 
@@ -41,16 +43,33 @@ function FormCard() {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    if (formObject.title && formObject.price) {
+    console.log("yoohooo, big summer blowout");
+    if (formObject.name && formObject.price) {
       productAPI
         .saveProduct({
-          name: formObject.title,
-          description: formObject.description,
-          salary: formObject.price,
+          // name: "Airpods Wireless Bluetooth Headphones",
+          // image: "/images/airpods.jpg",
+          // description:
+          //   "Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working",
+          // brand: "Apple",
+          // category: "Electronics",
+          // price: 89.99,
+          // countInStock: 10,
+          // rating: 4.5,
+          // numReviews: 12,
+          // user: 12,
+
+          name: formObject.name,
           image: formObject.image,
-          countInStock: 1,
-          rating: 1,
+          brand: formObject.brand,
+          description: formObject.description,
+          category: formObject.category,
+          price: formObject.price,
+          countInStock: formObject.countInStock,
+          rating: 5,
+          user:'',
           numReviews: 0,
+          motto: "we have the meats",
         })
         .then((res) => loadProducts())
         .catch((err) => console.log(err));
@@ -107,13 +126,28 @@ function FormCard() {
           <form action="/" method="POST" encType="multipart/form-data">
             <Input
               onChange={handleInputChange}
-              name="title"
+              name="name"
               placeholder="Product Name (required)"
+            />
+            <Input
+              onChange={handleInputChange}
+              name="brand"
+              placeholder="Brand  (required)"
             />
             <TextArea
               onChange={handleInputChange}
               name="description"
-              placeholder="Product Description (Optional)"
+              placeholder="Product Description (required)"
+            />
+            <Input
+              onChange={handleInputChange}
+              name="category"
+              placeholder="Category (required)"
+            />
+            <Input
+              onChange={handleInputChange}
+              name="countInStock"
+              placeholder="Quantity in Stock (required)"
             />
             <Input
               onChange={handleInputChange}
@@ -129,7 +163,7 @@ function FormCard() {
 
             <Button
               className="mb-2"
-              disabled={!(formObject.price && formObject.title)}
+              disabled={!(formObject.price && formObject.name)}
               onClick={handleFormSubmit}
             >
               Add Product

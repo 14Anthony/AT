@@ -6,17 +6,16 @@
   align-content: flex-end;
 }
 #sidebar-wrapper a {
-  position: absolute; 
-  width: 215px; 
-  font-size: 20px; 
+  position: absolute;
+  width: 215px;
+  font-size: 20px;
   padding: 10px;
   border-radius: 0px 5px 20px 0px;
   left: -175px;
   transition: 0.5s;
-  
 }
 #sidebar-wrapper a:hover {
-  left: 0px; 
+  left: 0px;
   opacity: 1;
 }
 #sidebar-wrapper i {
@@ -26,32 +25,28 @@
       border-color: rgb(54, 32, 32); */
 }
 
-#s1 { 
-  top: 90px; 
-  width: 210px; 
-  
-} 
+#s1 {
+  top: 90px;
+  width: 210px;
+}
 
-#s2 { 
-  top: 145px; 
-  width: 210px; 
-  
-} 
+#s2 {
+  top: 145px;
+  width: 210px;
+}
 
-#s3 { 
-  top: 200px; 
-  width: 210px; 
-  
-} 
+#s3 {
+  top: 200px;
+  width: 210px;
+}
 
-#s4{ 
-  top: 255px; 
-  width: 210px; 
-   
-} 
+#s4 {
+  top: 255px;
+  width: 210px;
+}
 
-#s5 { 
-  top: 290px; 
-  width: 210px; 
- 
-} 
+#s5 {
+  top: 310px;
+  width: 210px;
+  border-bottom: 1px solid black;
+}

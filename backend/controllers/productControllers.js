@@ -47,20 +47,21 @@ const deleteProduct = asyncHandler(async (req, res) => {
 //  POST to /api/products
 // this is access for a Private Admin  routes
 const createProduct = asyncHandler(async (req, res) => {
-    const product = new Product({
-        name: 'New Name',
-        price: 0,
-        user: req.user._id,
-        image: '/images/sample.jpg',
-        brand: 'New Brand',
-        category: 'New Category',
-        countInStock: 0,
-        numReviews: 0,
-        description: 'New Description',
-        rating: 5
-    })
-    const createdProduct = await product.save()
-    res.status(201).json(createdProduct)
+    console.log(req.body);
+    // const product = new Product({
+    //     name: 'New Name',
+    //     price: 0,
+    //     user: req.user._id,
+    //     image: '/images/sample.jpg',
+    //     brand: 'New Brand',
+    //     category: 'New Category',
+    //     countInStock: 0,
+    //     numReviews: 0,
+    //     description: 'New Description',
+    //     rating: 5
+    // })
+    // const createdProduct = await product.save()
+    // res.status(201).json(createdProduct)
 })
 // the is going to UPDATE a product
 //  PUT to /api/products/:id

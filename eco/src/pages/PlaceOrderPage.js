@@ -1,158 +1,157 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Button, Row, Col, ListGroup, Image } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import CheckoutSteps from '../components/CheckoutSteps'
-import { createOrder } from '../actions/orderActions'
-
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button, Row, Col, ListGroup, Image } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import CheckoutSteps from "../components/CheckoutSteps";
+import { createOrder } from "../actions/orderActions";
 
 const PlaceOrderPage = ({ history }) => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
+  const cart = useSelector((state) => state.cart);
 
-    const cart = useSelector(state => state.cart)
+  //Calculate Prices
+  const addDecimials = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+  cart.itemsPrice = addDecimials(
+    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  );
+  cart.shippingPrice = addDecimials(cart.itemsPrice > 100 ? 0 : 100);
+  cart.taxPrice = addDecimials(Number((0.15 * cart.itemsPrice).toFixed(2)));
+  cart.totalPrice = addDecimials(
+    Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)
+  );
 
-    //Calculate Prices
-    const addDecimials = (num) => {
-        return (Math.round(num * 100) / 100).toFixed(2)
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`);
     }
-    cart.itemsPrice = addDecimials(cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
-    cart.shippingPrice = addDecimials(cart.itemsPrice > 100 ? 0 : 100)
-    cart.taxPrice = addDecimials(Number((0.15 * cart.itemsPrice).toFixed(2)))
-    cart.totalPrice = addDecimials(Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice))
+    // eslint-disable-next-line
+  }, [history, success]);
 
-    const orderCreate = useSelector(state => state.orderCreate)
-    const { order, success, error } = orderCreate
+  const placeOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
+  return (
+    <>
+      <CheckoutSteps step1 step2 step3 step4 />
+      <Row>
+        <Col md={8}>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <h2>Shipping</h2>
+              <p>
+                Address: {cart.shippingAddress.address},{" "}
+                {cart.shippingAddress.city}, {cart.shippingAddress.zip}
+                {"  "}
+                {cart.shippingAddress.country}
+              </p>
+            </ListGroup.Item>
 
-    useEffect(() => {
-        if (success) {
-            history.push(`/order/${order._id}`)
-        }
-        // eslint-disable-next-line
-    }, [history, success])
+            <ListGroup.Item>
+              <h2>Payment</h2>
+              <p>Method: {cart.paymentMethod}</p>
+            </ListGroup.Item>
 
+            <ListGroup.Item>
+              <h2>Current Order</h2>
 
-    const placeOrderHandler = () => {
-        dispatch(
-            createOrder({
-                orderItems: cart.cartItems,
-                shippingAddress: cart.shippingAddress,
-                paymentMethod: cart.paymentMethod,
-                itemsPrice: cart.itemsPrice,
-                shippingPrice: cart.shippingPrice,
-                taxPrice: cart.taxPrice,
-                totalPrice: cart.totalPrice,
+              {cart.cartItems.length === 0 ? (
+                <Message>Where are your Items?</Message>
+              ) : (
+                <ListGroup variant="flush">
+                  {cart.cartItems.map((item, index) => (
+                    <ListGroup.Item key={item.id}>
+                      <Row>
+                        <Col md={1}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            rounded
+                          />
+                        </Col>
+                        <Col>
+                          {/* //remember to bring in the link? */}
+                          <Link to={`/product/${item.product}`}>
+                            {item.name}
+                          </Link>
+                        </Col>
+                        <Col md={4}>
+                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              )}
+            </ListGroup.Item>
+          </ListGroup>
+        </Col>
+        <Col md={4}>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <h2> Purchase Summary</h2>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Col>Items</Col>
+                <Col>${cart.itemsPrice}</Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Col>Shipping</Col>
+                <Col>${cart.shippingPrice}</Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Col>Tax</Col>
+                <Col>${cart.taxPrice}</Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Col>Total</Col>
+                <Col>${cart.totalPrice}</Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              {error && <Message variant="warning">{error}</Message>}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <br></br>
+              <Button
+                type="button"
+                variant="info"
+                className="btn-block"
+                disabled={cart.cartItems === 0}
+                onClick={placeOrderHandler}
+              >
+                Place Order
+              </Button>
+            </ListGroup.Item>
+          </ListGroup>
+        </Col>
+      </Row>
+    </>
+  );
+};
 
-
-            }))
-    }
-    return (
-        <>
-            <CheckoutSteps step1 step2 step3 step4 />
-            <Row>
-                <Col md={8}>
-                    <ListGroup variant='flush'>
-                        <ListGroup.Item>
-                            <h2>Shipping</h2>
-                            <p>
-                                Address:{' '}
-
-
-                                {cart.shippingAddress.address},{' '}
-                                {cart.shippingAddress.city},{' '}
-                                {cart.shippingAddress.zip}{'  '}
-                                {cart.shippingAddress.country}
-
-
-
-                            </p>
-                        </ListGroup.Item>
-
-                        <ListGroup.Item>
-                            <h2>Payment</h2>
-                            <p>
-                                Method:{' '}{cart.paymentMethod}
-                            </p>
-                        </ListGroup.Item>
-
-                        <ListGroup.Item>
-
-                            <h2>Current Order</h2>
-
-                            {cart.cartItems.length === 0 ? <Message>Where are your Items?</Message> :
-
-
-                                (<ListGroup variant='flush'>
-                                    {cart.cartItems.map((item, index) => (
-                                        <ListGroup.Item key={index}>
-                                            <Row>
-                                                <Col md={1}>
-                                                    <Image src={item.image} alt={item.name} fluid rounded />
-                                                </Col>
-                                                <Col>
-                                                    {/* //remember to bring in the link? */}
-                                                    <Link to={`/product/${item.product}`}>
-                                                        {item.name}
-                                                    </Link>
-                                                </Col>
-                                                <Col md={4} >
-                                                    {item.qty} x ${item.price} = ${item.qty * item.price}
-
-                                                </Col>
-                                            </Row>
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
-                                )}
-
-                        </ListGroup.Item>
-                    </ListGroup>
-                </Col>
-                <Col md={4}>
-                    <ListGroup variant='flush'>
-                        <ListGroup.Item>
-                            <h2> Purchase Summary</h2>
-
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Row>
-                                <Col>Items</Col>
-                                <Col>${cart.itemsPrice}</Col>
-                            </Row>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Row>
-                                <Col>Shipping</Col>
-                                <Col>${cart.shippingPrice}</Col>
-                            </Row>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-
-                            <Row>
-                                <Col>Tax</Col>
-                                <Col>${cart.taxPrice}</Col>
-                            </Row>
-
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Row>
-                                <Col>Total</Col>
-                                <Col>${cart.totalPrice}</Col>
-                            </Row>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            {error && <Message variant='warning'>{error}</Message>}
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <br></br>
-                            <Button type='button' variant='info' className='btn-block' disabled={cart.cartItems === 0} onClick={placeOrderHandler}>Place Order</Button>
-                        </ListGroup.Item>
-                    </ListGroup>
-                </Col>
-            </Row>
-        </>
-    )
-}
-
-export default PlaceOrderPage
+export default PlaceOrderPage;

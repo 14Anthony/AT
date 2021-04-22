@@ -2,10 +2,10 @@ import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import { AdminSideBar, UserSideBar } from "../console_data/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "react-bootstrap";
+// import { Button } from "react-bootstrap";
 import "./style.css";
 // console.log(AdminSideBar);
-console.log(UserSideBar);
+
 
 const Sidebar = () => {
   let { url } = useRouteMatch();

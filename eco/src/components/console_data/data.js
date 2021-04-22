@@ -1,9 +1,10 @@
-import ProductList from "../productList";
+import ProductListAdminPage from "../../pages/ProductListAdminPage";
+import UserListAdminPage from "../../pages/UserListAdminPage";
 import FormCard from "../FormCard";
-import Report from "../Report"
-import ProfilePage from '../../pages/ProfilePage'
+import Report from "../Report";
+import ProfilePage from "../../pages/ProfilePage";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 import {
   // faCoffee,
@@ -11,34 +12,37 @@ import {
   faListAlt,
   faEdit,
   faChartBar,
+  faAddressCard,
+  
 } from "@fortawesome/free-regular-svg-icons";
 
 export const AdminSideBar = [
-  // {
-  //   name: "Admin Console",
-  //   id: "",
-  //   resources: "<ProductList/>",
-  //    icon: faCoffee,
-  // },
   {
     name: "Manage Profile",
     order: "s1",
-    id: "1",
-    main: () => <ProfilePage />,
+    id: "Profile",
+    main: () => <ProfilePage/>,
     icon: faUserCircle,
   },
   {
-    name: "View Products",
+    name: "Manage Users",
     order: "s2",
-    id: "ProductList",
-    main: () => <ProductList />,
+    id: "Users",
+    main:() => <UserListAdminPage/>,
+    icon: faAddressCard,
+  },
+  {
+    name: "View Products",
+    order: "s3",
+    id: "ProductsList",
+    main: () => <ProductListAdminPage/> ,
     icon: faListAlt,
   },
   {
     name: "Add Product",
-    order: "s3",
-    id: "FormCard",
-    main: () => <FormCard />,
+    order: "s4",
+    id: "AddProduct",
+    main: () => <FormCard/>,
     icon: faEdit,
   },
   // {
@@ -50,9 +54,9 @@ export const AdminSideBar = [
   // },
   {
     name: "Reports",
-    order: "s4",
-    id: "4",
-    main: () => <Report />,
+    order: "s5",
+    id: "Reports",
+    main: () => <Report/>,
     icon: faChartBar,
   },
 ];

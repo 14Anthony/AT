@@ -1,110 +1,83 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema(
-    {
-
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-            ref: 'User'
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    orderItems: [
+      {
+        name: { type: String, required: true },
+        qty: { type: Number, required: true },
+        image: { type: String, required: true },
+        price: { type: Number, required: true },
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "Product",
         },
+      },
+    ],
 
+    shippingAddress: {
+      address: { type: String, required: true },
+      city: { type: String, required: true },
+      zip: { type: String, required: true },
+      country: { type: String, required: true },
+    },
+    // Travis wants to have multiple payment methods used ....I can only think is will be like this.
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
 
-        orderItems: [
-            {
-                name: { type: String, required: true },
-                qty: { type: Number, required: true },
-                image: { type: String, required: true },
-                price: { type: Number, required: true },
-                product: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    required: true,
-                    ref: 'Product'
-                }
+    // paypal payment methods....?  will leave the others open when we find out how they work.
+    paymentResult: {
+      // this is whay paypal is said to render.
+      id: { type: String },
+      status: { type: String },
+      update_time: { type: String },
+      email_address: { type: String },
+    },
+    taxPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    ShippingCost: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    totalPrice: {
+      type: Number,
+      required: true,
+      default: 0.0,
+    },
+    isPaid: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    paidAt: {
+      type: Date,
+    },
+    isDelivered: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    deliveredAt: {
+      type: Date,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-            }
-        ],
+const Order = mongoose.model("Order", orderSchema);
 
-
-        shippingAddress: {
-            address: { type: String, required: true },
-            city: { type: String, required: true },
-            zip: { type: String, required: true },
-            country: { type: String, required: true },
-
-        },
-        // Travis wants to have multiple payment methods used ....I can only think is will be like this.
-        paymentMethod: {
-
-            type: String,
-            required: true,
-
-
-        },
-
-        // paypal payment methods....?  will leave the others open when we find out how they work.
-        paymentResult: {
-            // this is whay paypal is said to render.
-            id: { type: String },
-            status: { type: String },
-            update_time: { type: String },
-            email_address: { type: String }
-
-        },
-
-
-        taxPrice: {
-
-            type: Number,
-            required: true,
-            default: 0.0
-
-
-        },
-        ShippingCost: {
-
-            type: Number,
-            required: true,
-            default: 0.0
-
-
-        },
-        totalPrice: {
-
-            type: Number,
-            required: true,
-            default: 0.0
-
-
-        },
-        isPaid: {
-
-            type: Boolean,
-            required: true,
-            default: false
-
-
-        },
-        paidAt: {
-            type: Date
-        },
-
-        isDelivered: {
-            type: Boolean,
-            required: true,
-            default: false,
-        },
-
-        deliveredAt: {
-            type: Date
-        },
-
-    }, {
-    timestamps: true
-
-}
-)
-
-const Order = mongoose.model('Order', orderSchema)
-
-export default Order
+export default Order;

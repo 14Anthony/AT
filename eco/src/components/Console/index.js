@@ -7,11 +7,13 @@ import "./style.css";
 
 
 function Resource({ match }) {
-  console.log();
+  
   const topic = AdminSideBar.find(({ id }) => id === match.params.topicId);
   return (
     <div>
+      {topic &&(
       <topic.main />
+      )}
     </div>
   );
 }
